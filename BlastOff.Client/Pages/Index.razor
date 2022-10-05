@@ -1,32 +1,67 @@
 ﻿@page "/"
-@inject HttpClient http
+@using Microsoft.Extensions.Configuration
+@using System.Collections
 @using System.Net.Http
 @using System.IO
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq;
 
+
+@inject IConfiguration Configuration
+@inject HttpClient httpClient
+
+
+
+<PageTitle>BlassOff</PageTitle>
 
 @if (image != null)
 {
     <div class="p-4">
         <h1 class="text-6xl">@image.Title</h1>
-        <p class="text-2xl">@FormatDate(image.Date)</p>
+        <p class="text-2xl">(@image.Date)</p>
         @if (image.Copyright != null)
         {
             <p>Copyright: @image.Copyright</p>
         }
     </div>
-
     <div class="flex justify-center p-4">
         <img src="@image.Url" class="rounded-lg h-500 w-500 flex items-center justify-center"><br />
     </div>
 }
 
+
 @code
 {
-    private Image image;
+    private APODImage image;
+
+    private static string GetRandomDate()
+    {
+        var random = new Random();
+        var startDate = new DateTime(1995, 06, 16);
+        var range = (DateTime.Today - startDate).Days;
+        return startDate.AddDays(random.Next(range)).ToString("yyyy-MM-dd");
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
-        image = await http.GetFromJsonAsync<Data.Image>("api/image");
+        string apiKey = Configuration["APODApiKey"];
+
+        Console.WriteLine(apiKey);
+
+
+        var response = await httpClient.GetAsync($"https://api.nasa.gov/planetary/apod?api_key={apiKey}&hd=true&date={GetRandomDate()}");
+        var result = await response.Content.ReadAsStringAsync();
+
+        JObject json = JObject.Parse(result);
+
+        Console.WriteLine(json.GetType());
+        Console.WriteLine(json);
+
+        image = JsonConvert.DeserializeObject<APODImage>(json.ToString());
+
+        Console.WriteLine(image);
+
     }
 
 }

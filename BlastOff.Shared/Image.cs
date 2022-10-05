@@ -1,11 +1,6 @@
-﻿using Microsoft.Azure.CosmosRepository;
-using Newtonsoft.Json;
-using System;
-using System.ComponentModel;
-
-namespace BlastOff.Shared
+﻿namespace BlastOff.Shared
 {
-    public class Image
+    public class APODImage
     {
         public string Title { get; set; }
         public string Copyright { get; set; }
@@ -13,7 +8,6 @@ namespace BlastOff.Shared
         public string Explanation { get; set; }
         public string Url { get; set; }
         public string HdUrl { get; set; }
+
     }
-
-
 }
