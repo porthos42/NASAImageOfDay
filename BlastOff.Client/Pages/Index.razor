@@ -1,22 +1,32 @@
 ﻿@page "/"
+@inject HttpClient http
+@using System.Net.Http
+@using System.IO
 
-<div class="text-center bg-blue-100">
-    <input class="border-4 w-3/4 rounded m-6 p-6 h-8
-               border-blue-300" @bind-value="SearchText"
-           @bind-value:event="oninput" placeholder="Search by title" />
-</div>
 
-@if (!ImageList.Any())
+@if (image != null)
 {
-    <p>Loading some images...</p>
-}
-else
-{
-    <div class="p-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-        @foreach (var image in FilteredImages)
+    <div class="p-4">
+        <h1 class="text-6xl">@image.Title</h1>
+        <p class="text-2xl">@FormatDate(image.Date)</p>
+        @if (image.Copyright != null)
         {
-            <ImageCard ImageDetails="image" />
+            <p>Copyright: @image.Copyright</p>
         }
+    </div>
+
+    <div class="flex justify-center p-4">
+        <img src="@image.Url" class="rounded-lg h-500 w-500 flex items-center justify-center"><br />
     </div>
 }
 
+@code
+{
+    private Image image;
+
+    protected override async Task OnInitializedAsync()
+    {
+        image = await http.GetFromJsonAsync<Data.Image>("api/image");
+    }
+
+}
