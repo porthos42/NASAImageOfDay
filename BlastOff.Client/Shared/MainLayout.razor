@@ -1,0 +1,14 @@
+@inherits LayoutComponentBase
+<NavBar />
+
+<div>
+    <div class="section columns">
+        <main class="column">
+            <MudThemeProvider/>
+            <MudDialogProvider
+                FullWidth="true"
+                MaxWidth="MaxWidth.Small"/>
+            @Body
+        </main>
+    </div>
+</div>
