@@ -9,10 +9,12 @@
 
 @inject IConfiguration Configuration
 @inject HttpClient httpClient
+@inject IDialogService DialogService
+@inject IImageService ImageService
 
 
 
-<PageTitle>BlassOff</PageTitle>
+<PageTitle>BlastOff</PageTitle>
 
 @if (image != null)
 {
@@ -29,39 +31,55 @@
     </div>
 }
 
+@if (!ImageList.Any())
+{
+    <p>Loading some images...</p>
+}
+else
+{
+    <div class="p-2 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+        @foreach (var image in ImageList)
+        {
+            <ImageCard ImageDetails="image" />
+        }
+    </div>
+}
+
 
 @code
 {
-    private APODImage image;
+    
+    [Parameter]
+    public APODImage ImageDetails { get; set; }
 
-    private static string GetRandomDate()
-    {
-        var random = new Random();
-        var startDate = new DateTime(1995, 06, 16);
-        var range = (DateTime.Today - startDate).Days;
-        return startDate.AddDays(random.Next(range)).ToString("yyyy-MM-dd");
-    }
+    private APODImage image;
+    public IEnumerable<APODImage> ImageList { get; set; } = new List<APODImage>();
 
 
     protected override async Task OnInitializedAsync()
     {
+        //ImageService imageService = new ImageService();
+
         string apiKey = Configuration["APODApiKey"];
 
         Console.WriteLine(apiKey);
 
+        // var response = await ImageService.GetImage(apiKey);
+        // image = response as APODImage;
+        
 
-        var response = await httpClient.GetAsync($"https://api.nasa.gov/planetary/apod?api_key={apiKey}&hd=true&date={GetRandomDate()}");
-        var result = await response.Content.ReadAsStringAsync();
+        //Console.WriteLine(image.GetType());
+        //Console.WriteLine(image.Url);
 
-        JObject json = JObject.Parse(result);
+        ImageList = await ImageService.GetImages(days: 10, apiKey);
 
-        Console.WriteLine(json.GetType());
-        Console.WriteLine(json);
 
-        image = JsonConvert.DeserializeObject<APODImage>(json.ToString());
+    }
 
-        Console.WriteLine(image);
-
+    private void OpenDialog()
+    {
+        var parameters = new DialogParameters { { "ImageDetails", ImageDetails } };
+        DialogService.Show<ImageDialog>(ImageDetails.Title, parameters);
     }
 
 }

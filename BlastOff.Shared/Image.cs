@@ -8,6 +8,8 @@
         public string Explanation { get; set; }
         public string Url { get; set; }
         public string HdUrl { get; set; }
+        public bool IsNew => Date > DateTime.Today.AddDays(-3);
+        public string PrettyDate => Date.ToString("MMMM dd, yyyy");
 
     }
 }

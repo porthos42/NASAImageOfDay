@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlastOff.Client", "BlastOff.Client\BlastOff.Client.csproj", "{2F1B9EB3-45F4-44BD-A19B-2A32B243D86F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlastOff.Client", "BlastOff.Client\BlastOff.Client.csproj", "{2F1B9EB3-45F4-44BD-A19B-2A32B243D86F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlastOff.Shared", "BlastOff.Shared\BlastOff.Shared.csproj", "{7BAA7733-40D5-4B81-89E0-19CBCD67395E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlastOff.Shared", "BlastOff.Shared\BlastOff.Shared.csproj", "{7BAA7733-40D5-4B81-89E0-19CBCD67395E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

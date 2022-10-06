@@ -5,13 +5,15 @@
         <NavMenu />
     </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+    <div>
+        <div class="section columns">
+            <main class="column">
+                <MudThemeProvider />
+                <MudDialogProvider
+                    FullWidth="true"
+                    MaxWidth="MaxWidth.Small" />
+                @Body
+            </main>
         </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    </div>
 </div>
